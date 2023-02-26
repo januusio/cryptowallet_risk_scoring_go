@@ -1,0 +1,161 @@
+openapi: 3.0.1
+info:
+  title: Risk scoring API
+  description: This is an API that provides whitebox risk scoring
+  version: "1.0"
+servers:
+- url: https://risk.charybdis.januus.io/
+- url: http://risk.charybdis.januus.io/
+paths:
+  /score/btc/{address}:
+    get:
+      parameters:
+      - name: address
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/RiskReport'
+        "400":
+          description: Invalid `address`
+          content: {}
+  /score/eth/{address}:
+    get:
+      parameters:
+      - name: address
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/RiskReport'
+        "400":
+          description: Invalid `address`
+          content: {}
+components:
+  schemas:
+    Offsets:
+      required:
+      - combinedRiskOffset
+      - fraudRiskOffset
+      - lendingRiskOffset
+      - reputationRiskOffset
+      type: object
+      properties:
+        combinedRiskOffset:
+          type: number
+          format: float
+        fraudRiskOffset:
+          type: number
+          format: float
+        lendingRiskOffset:
+          type: number
+          format: float
+        reputationRiskOffset:
+          type: number
+          format: float
+      description: Risk offsets
+      example:
+        combinedRiskOffset: 1.2
+        fraudRiskOffset: 3.4
+        lendingRiskOffset: 5.6
+        reputationRiskOffset: 7.8
+    Reason:
+      required:
+      - explanation
+      - label
+      - offsets
+      - riskElaboration
+      type: object
+      properties:
+        explanation:
+          type: string
+        label:
+          type: string
+        offsets:
+          $ref: '#/components/schemas/Offsets'
+        riskElaboration:
+          $ref: '#/components/schemas/RiskElaboration'
+      description: Reason for the risk score
+      example:
+        explanation: This is an example explanation
+        label: This is an example label
+        offsets:
+          combinedRiskOffset: 1.2
+          fraudRiskOffset: 3.4
+          lendingRiskOffset: 5.6
+          reputationRiskOffset: 7.8
+        riskElaboration: {}
+    RiskElaboration:
+      type: object
+      description: Unstructured JSON risk elaboration
+    RiskReport:
+      required:
+      - reasons
+      - riskScores
+      type: object
+      properties:
+        reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reason'
+        riskScores:
+          $ref: '#/components/schemas/RiskScores'
+      description: Risk score response
+      example:
+        reasons:
+        - explanation: This is an example explanation
+          label: This is an example label
+          offsets:
+            combinedRiskOffset: 1.2
+            fraudRiskOffset: 3.4
+            lendingRiskOffset: 5.6
+            reputationRiskOffset: 7.8
+          riskElaboration: {}
+        riskScores:
+          combinedRisk: 1.2
+          fraudRisk: 3.4
+          lendingRisk: 5.6
+          reputationRisk: 7.8
+    RiskScores:
+      required:
+      - combinedRisk
+      - fraudRisk
+      - lendingRisk
+      - reputationRisk
+      type: object
+      properties:
+        combinedRisk:
+          type: number
+          format: float
+        fraudRisk:
+          type: number
+          format: float
+        lendingRisk:
+          type: number
+          format: float
+        reputationRisk:
+          type: number
+          format: float
+      description: Risk score
+      example:
+        combinedRisk: 1.2
+        fraudRisk: 3.4
+        lendingRisk: 5.6
+        reputationRisk: 7.8
+x-original-swagger-version: "2.0"
