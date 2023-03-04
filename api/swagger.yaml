@@ -47,6 +47,26 @@ paths:
         "400":
           description: Invalid `address`
           content: {}
+  /score/other/{address}:
+    get:
+      parameters:
+      - name: address
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/RiskReport'
+        "400":
+          description: Invalid `address`
+          content: {}
 components:
   schemas:
     Offsets:
