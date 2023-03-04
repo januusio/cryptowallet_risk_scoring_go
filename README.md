@@ -36,8 +36,8 @@ import (
 )
 
 func main() {
-	cfg := swagger.NewConfiguration()
-	apiClient := swagger.NewAPIClient(cfg)
+	cfg := risk_scoring.NewConfiguration()
+	apiClient := risk_scoring.NewAPIClient(cfg)
 
 	address := "0xbb0ea877a85df253ccc312b80c644da31443abfd"
 
